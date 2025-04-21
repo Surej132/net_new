@@ -1,0 +1,36 @@
+import tensorflow as tf
+from tensorflow.keras import layers, models
+import numpy as np
+
+# Generate dummy data
+num_samples = 1000
+input_shape = (28, 28, 1)  # Example input shape for grayscale images
+num_classes = 10
+
+# Create random dummy data
+x_train = np.random.random((num_samples, *input_shape)).astype('float32')
+y_train = np.random.randint(0, num_classes, num_samples)
+y_train = tf.keras.utils.to_categorical(y_train, num_classes)
+
+# Define a dummy convolutional neural network architecture
+model = models.Sequential([
+    layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.Flatten(),
+    layers.Dense(64, activation='relu'),
+    layers.Dense(num_classes, activation='softmax')
+])
+
+# Compile the model
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+# Print model summary
+model.summary()
+
+# Train the model on dummy data
+model.fit(x_train, y_train, epochs=5, batch_size=32)
